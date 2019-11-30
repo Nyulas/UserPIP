@@ -43,6 +43,7 @@ public class LoginFragment extends Fragment {
     private String username;
     private User user;
     String userId;
+    private int helper;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -83,6 +84,8 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+
+        helper = 0;
         username_et = view.findViewById(R.id.Username_ET);
         userID_et = view.findViewById(R.id.UserId_ET);
 
@@ -127,15 +130,20 @@ public class LoginFragment extends Fragment {
 
                     if(g.getID() == userID)
                     {
-                        user = new User(username,userID);
-                        mDatabase.child("admin").child("groups").child(g.getName()).child(username).setValue(user);
+                        if(helper == 0){
+                            helper++;
+                            user = new User(username,userID,"0");
+                            mDatabase.child("admin").child("groups").child(g.getName()).child(username).setValue(user);
 
-                        VoteFragment voteFragment = VoteFragment.newInstance(userID);
+                            VoteFragment voteFragment = VoteFragment.newInstance(user,g);
 
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.fg_placeholder,voteFragment,"GAQ_fragment");
-                        fragmentTransaction.addToBackStack(null);
-                        fragmentTransaction.commit();
+                            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                            fragmentTransaction.replace(R.id.fg_placeholder,voteFragment,"GAQ_fragment");
+                            fragmentTransaction.addToBackStack(null);
+                            fragmentTransaction.commit();
+
+                        }
+
                     }
                     else{
                         Toast.makeText(getContext(),"nincsen ilyen csoport",Toast.LENGTH_LONG).show();

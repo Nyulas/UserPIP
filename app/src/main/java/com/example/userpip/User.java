@@ -1,11 +1,13 @@
 package com.example.userpip;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private int ID;
     private String Name;
-    private int Vote_value;
-    private Question Question;
+    private String Vote_value;
+    //private Question Question;
 
     public User(){ }
 
@@ -14,11 +16,11 @@ public class User {
         this.ID=ID;
     }
 
-    public User(String Name,int ID, int vote_value, Question question) {
+    public User(String Name,int ID, String vote_value){//, Question question) {
         this.Name = Name;
         this.ID = ID;
         Vote_value = vote_value;
-        this.Question = question;
+        //this.Question = question;
     }
 
     public String getName() {
@@ -37,19 +39,22 @@ public class User {
         this.ID = ID;
     }
 
-    public int getVote_value() {
+    public String getVote_value() {
         return Vote_value;
     }
 
-    public void setVote_value(int vote_value) {
+    public void setVote_value(String vote_value) {
         Vote_value = vote_value;
     }
 
-    public Question getQuestion() {
+    /*public Question getQuestion() {
         return Question;
     }
 
-    public void setQuestion(Question question) {
+     */
+
+    /*public void setQuestion(Question question) {
         this.Question = question;
     }
+     */
 }

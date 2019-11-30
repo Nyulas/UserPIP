@@ -29,7 +29,8 @@ import java.util.Arrays;
 public class VoteFragment extends Fragment
 {
 
-    private static final String ARG_PARAM1 = "user_id";
+    private static final String ARG_PARAM1 = "user";
+    private static final String ARG_PARAM2 = "group";
 
     private static int counter = 0;
     private int pressed_button_id;
@@ -37,11 +38,14 @@ public class VoteFragment extends Fragment
     private com.google.firebase.database.DatabaseReference groupReff;
     int user_id;
     TextView tv_title;
+    private User user;
+    private Group group;
 
-    public static VoteFragment newInstance(int user_id) {
+    public static VoteFragment newInstance(User user,Group group) {
         VoteFragment fragment = new VoteFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, user_id);
+        args.putSerializable(ARG_PARAM1, user);
+        args.putSerializable(ARG_PARAM2, group);
         fragment.setArguments(args);
         return fragment;
     }
@@ -91,7 +95,10 @@ public class VoteFragment extends Fragment
 
         Bundle bundle = this.getArguments();
 
-        user_id= bundle.getInt("user_id");
+        user = (User) bundle.getSerializable("user");
+        group = (Group) bundle.getSerializable("group");
+
+        user_id = user.getID();
 
         groupReff.addValueEventListener(new ValueEventListener() {
             @Override
@@ -102,9 +109,7 @@ public class VoteFragment extends Fragment
 
 
                     if(g.getID() == user_id ){
-                        Log.d("uzenet", "valtoztaja a title");
-                        Log.d("uzenet", g.getQuestion().toString());
-                        tv_title.setText(g.getQuestion().getQuestion().toString());
+                        tv_title.setText(g.getQuestion().getQuestion());
 
                     }
 
@@ -125,6 +130,7 @@ public class VoteFragment extends Fragment
             public void onClick(View v)
             {
                 pressed_button_id = 12;
+
             }
         });
 
@@ -150,10 +156,10 @@ public class VoteFragment extends Fragment
             public void onClick(View view)
             {
 
-                //FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                //fragmentTransaction.replace(R.id.fg_placeholder,listVoteFragment,"List Fragment");
-                //fragmentTransaction.addToBackStack(null);
-                //fragmentTransaction.commit();
+
+                Log.d("uzenet", "cucc: " + pressed_button_id);
+                user.setVote_value(buttonText.get(pressed_button_id));
+                groupReff.child(group.getName()).child(user.getName()).setValue(user);
 
             }
         });
