@@ -42,6 +42,7 @@ public class LoginFragment extends Fragment {
     private int userID;
     private String username;
     private User user;
+    String userId;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -80,7 +81,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         username_et = view.findViewById(R.id.Username_ET);
         userID_et = view.findViewById(R.id.UserId_ET);
@@ -97,11 +98,15 @@ public class LoginFragment extends Fragment {
 
                 username = username_et.getText().toString();
 
-                String userId =userID_et.getText().toString();
+                userId =userID_et.getText().toString();
 
-                userID = Integer.parseInt(userId);
-
-                idCheck();
+                if (!userId.isEmpty() ) {
+                    userID = Integer.parseInt(userId);
+                    idCheck();
+                }else {
+                    Log.d("uzenet", "idebekerul");
+                    Toast.makeText(view.getContext(),"You thought",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -125,12 +130,14 @@ public class LoginFragment extends Fragment {
                         user = new User(username,userID);
                         mDatabase.child("admin").child("groups").child(g.getName()).child(username).setValue(user);
 
-                        //FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        //fragmentTransaction.replace(R.id.fg_placeholder,fragment,"GAQ_fragment");
-                        //fragmentTransaction.addToBackStack(null);
-                        //fragmentTransaction.commit();
+                        VoteFragment voteFragment = VoteFragment.newInstance(userID);
+
+                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.fg_placeholder,voteFragment,"GAQ_fragment");
+                        fragmentTransaction.addToBackStack(null);
+                        fragmentTransaction.commit();
                     }
-                    else {
+                    else{
                         Toast.makeText(getContext(),"nincsen ilyen csoport",Toast.LENGTH_LONG).show();
                     }
 
