@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class VoteFragment extends Fragment
 {
@@ -36,6 +37,7 @@ public class VoteFragment extends Fragment
     private int pressed_button_id;
     static String title;
     private com.google.firebase.database.DatabaseReference groupReff;
+    private com.google.firebase.database.DatabaseReference refference;
     int user_id;
     TextView tv_title;
     private User user;
@@ -54,7 +56,7 @@ public class VoteFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
     {
         //inflate the layout for this fragment (don't forget to set the last param to false !!!)
-        View retView = inflater.inflate(R.layout.vote_fragment,container,false);
+        final View retView = inflater.inflate(R.layout.vote_fragment,container,false);
 
         //text of buttons in arraylist
         final ArrayList<String> buttonText = new ArrayList<>(Arrays.asList("0","1/2","1","2","3","5","8","13","20","40","100","?","coffee"));
@@ -90,6 +92,7 @@ public class VoteFragment extends Fragment
         //set title for textview
 
         groupReff = FirebaseDatabase.getInstance().getReference().child("admin").child("groups");
+        refference =  FirebaseDatabase.getInstance().getReference().child("admin");
 
         tv_title = retView.findViewById(R.id.tv_voteFor);
 
@@ -110,7 +113,7 @@ public class VoteFragment extends Fragment
 
                     if(g.getID() == user_id ){
                         tv_title.setText(g.getQuestion().getQuestion());
-
+                        user.setQuestion(g.getQuestion().getQuestion());
                     }
 
                 }
@@ -161,6 +164,7 @@ public class VoteFragment extends Fragment
                 user.setVote_value(buttonText.get(pressed_button_id));
                 groupReff.child(group.getName()).child(user.getName()).setValue(user);
 
+                refference.child("result").push().setValue(user);
             }
         });
 

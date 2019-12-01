@@ -7,7 +7,7 @@ public class User implements Serializable {
     private int ID;
     private String Name;
     private String Vote_value;
-    //private Question Question;
+    private String Question;
 
     public User(){ }
 
@@ -16,11 +16,10 @@ public class User implements Serializable {
         this.ID=ID;
     }
 
-    public User(String Name,int ID, String vote_value){//, Question question) {
+    public User(String Name,int ID, String vote_value){
         this.Name = Name;
         this.ID = ID;
         Vote_value = vote_value;
-        //this.Question = question;
     }
 
     public String getName() {
@@ -47,14 +46,12 @@ public class User implements Serializable {
         Vote_value = vote_value;
     }
 
-    /*public Question getQuestion() {
+    public String getQuestion() {
         return Question;
     }
 
-     */
-
-    /*public void setQuestion(Question question) {
+    public void setQuestion(String question) {
         this.Question = question;
     }
-     */
+
 }
