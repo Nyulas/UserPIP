@@ -107,7 +107,6 @@ public class LoginFragment extends Fragment {
                     userID = Integer.parseInt(userId);
                     idCheck();
                 }else {
-                    Log.d("uzenet", "idebekerul");
                     Toast.makeText(view.getContext(),"You thought",Toast.LENGTH_LONG).show();
                 }
             }
@@ -118,15 +117,13 @@ public class LoginFragment extends Fragment {
 
     public void idCheck(){
 
-        groupReff.addValueEventListener(new ValueEventListener() {
+        groupReff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot iterator : dataSnapshot.getChildren())
                 {
 
                     Group g = iterator.getValue(Group.class);
-
-                    Log.d("uzenet", "onDataChange: ");
 
                     if(g.getID() == userID)
                     {
@@ -141,15 +138,14 @@ public class LoginFragment extends Fragment {
                             fragmentTransaction.replace(R.id.fg_placeholder,voteFragment,"GAQ_fragment");
                             fragmentTransaction.addToBackStack(null);
                             fragmentTransaction.commit();
+                            return;
 
                         }
 
                     }
-                    else{
-                        Toast.makeText(getContext(),"nincsen ilyen csoport",Toast.LENGTH_LONG).show();
-                    }
 
                 }
+                Toast.makeText(getContext(),"nincsen ilyen csoport",Toast.LENGTH_LONG).show();
             }
 
             @Override

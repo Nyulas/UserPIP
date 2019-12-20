@@ -110,7 +110,6 @@ public class VoteFragment extends Fragment
                 {
                     Group g = iterator.getValue(Group.class);
 
-
                     if(g.getID() == user_id ){
                         tv_title.setText(g.getQuestion().getQuestion());
                         user.setQuestion(g.getQuestion().getQuestion());
@@ -165,6 +164,14 @@ public class VoteFragment extends Fragment
                 groupReff.child(group.getName()).child(user.getName()).setValue(user);
 
                 refference.child("result").push().setValue(user);
+
+                List_Questions_Fragment fragment = List_Questions_Fragment.newInstance(user);
+
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fg_placeholder,fragment,"GAQ_fragment");
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
             }
         });
 
